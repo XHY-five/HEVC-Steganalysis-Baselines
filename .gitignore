@@ -50,3 +50,11 @@ stego/**/build/
 tools/bin/hm_ipm/
 tools/bin/hm_stego/
 tools/decode_ipm.py
+
+# Steganographic embedders and encoder implementations are also local-only.
+# The repository publishes only steganalysis code and interface formats.
+stego/
+tools/bin/x265_candidates/
+tools/bin/x265_recompress/
+tools/reencode_calibration.py
+tools/x265_candidates.py
