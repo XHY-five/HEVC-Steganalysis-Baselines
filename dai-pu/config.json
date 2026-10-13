@@ -1,0 +1,1 @@
+{"input_kind":"pu_map","batch_size":16,"learning_rate":0.00001,"epochs":50,"decay_every":5,"decay_gamma":0.8,"image_size":128,"max_frames":8,"base_channels":32,"pu_normalizer":8,"aggregation":"majority","seed":42}

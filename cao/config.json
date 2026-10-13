@@ -1,0 +1,21 @@
+{
+  "classifier": "svm",
+  "kernel": "rbf",
+  "C": 0.5,
+  "gamma": "scale",
+  "seed": 42,
+  "params_by_payload": {
+    "0.1": {
+      "C": 0.1,
+      "gamma": 0.001
+    },
+    "0.3": {
+      "C": 0.5,
+      "gamma": "scale"
+    },
+    "0.5": {
+      "C": 7.5,
+      "gamma": 0.05
+    }
+  }
+}
