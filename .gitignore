@@ -44,3 +44,9 @@ stego/**/build/
 
 # Keep executable deliverables
 !*.exe
+
+# Decoder implementations are intentionally not distributed. Users provide
+# their own decoder/exporter that emits the text interface documented in README.
+tools/bin/hm_ipm/
+tools/bin/hm_stego/
+tools/decode_ipm.py
