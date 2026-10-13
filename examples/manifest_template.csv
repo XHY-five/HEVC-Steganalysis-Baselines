@@ -1,5 +1,0 @@
-sample_id,label,split,tar,payload,original,calibrated,mv_path,residual_path,pu_path,error_path,data_path
-segmentA_cover,0,train,Tar3,0.3,logs/segmentA_cover.json,logs/segmentA_cover_cal.json,,,,,
-segmentA_stego,1,train,Tar3,0.3,logs/segmentA_stego.json,logs/segmentA_stego_cal.json,,,,,
-segmentB_cover,0,test,Tar3,0.3,logs/segmentB_cover.json,logs/segmentB_cover_cal.json,,,,,
-segmentB_stego,1,test,Tar3,0.3,logs/segmentB_stego.json,logs/segmentB_stego_cal.json,,,,,
