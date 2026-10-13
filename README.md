@@ -1,12 +1,19 @@
 # HEVC Steganalysis Baselines
 
-This project provides implementations of eight video steganalysis methods for evaluating their detection performance against HEVC Intra Prediction Mode (IPM) steganography. The implementations utilize HM/x265 decoding information for feature extraction, model training, and performance evaluation, following a unified data partitioning and experimental protocol.
+This project provides implementations of eight HEVC video steganalysis
+baselines spanning several embedding and feature domains. Only `cao`, `zhao`,
+and `shen` are IPM-domain detectors. The remaining methods analyze other codec
+domains: CU/PU/TU partition structure (`cao-tu`), motion vectors (`zhai`),
+prediction-error/residual statistics (`cao264` and `dai`), or PU partition maps
+(`dai-pu`). All methods follow a unified data partitioning and evaluation
+protocol. Instrumented HM/x265 syntax exports provide a common interchange
+format, but sharing that input container does not make every method an IPM
+steganalysis method.
 
 ## Codec and steganography implementation policy
 
 No HEVC encoder, decoder, steganographic embedder, codec wrapper, or related
-binary is distributed in this repository. This includes method-specific
-implementations such as those formerly kept under `stego/`. Users must provide
+binary is distributed in this repository. Users must provide
 their own implementations and produce UTF-8 text files in the interfaces
 described below. The published code performs steganalysis only; it does not
 embed data, encode YUV video, or decode HEVC bitstreams.
@@ -87,17 +94,18 @@ for methods that construct PU or prediction-error maps. `original` and
 `calibrated` files must use matching frame indices and coordinates wherever a
 method compares their records.
 
-The eight methods require these fields:
+The eight methods operate in the following detection domains and require these
+exported fields:
 
-| Method | Required decoded fields |
-| --- | --- |
-| `cao`, `shen` | `depth`, `partSize`, `IPM`; both original and calibrated TXT |
-| `cao-tu` | `depth`, `partSize`, `TUdepth` |
-| `zhai` | `partSize`, `mv_x`, `mv_y` |
-| `dai-pu` | `depth`, `partSize`, `IPM` |
-| `dai` | `IPM`, plus real `peb`/prediction-error data |
-| `cao264` | `IPM`, plus real `peb` data; both original and calibrated TXT |
-| `zhao` | Candidate-mode format described below; both original and calibrated TXT |
+| Method | Detection domain | Required exported fields |
+| --- | --- | --- |
+| `cao`, `shen` | IPM domain | `depth`, `partSize`, `IPM`; both original and calibrated TXT |
+| `zhao` | IPM/SATD candidate domain | Candidate-mode format described below; both original and calibrated TXT |
+| `cao-tu` | CU/PU/TU partition structure | `depth`, `partSize`, `TUdepth` |
+| `zhai` | Motion-vector domain | `depth`, `partSize`, `mv_x`, `mv_y` |
+| `dai-pu` | PU partition-map domain | `depth`, `partSize`, `IPM` (IPM is exported context, not the detector's target domain) |
+| `dai` | Prediction-error domain | Real `peb`/prediction-error data, with `IPM` as exported context |
+| `cao264` | PEB/residual-statistics domain | Real `peb` data and auxiliary `IPM`; both original and calibrated TXT |
 
 Do not synthesize prediction-error values from IPM differences. `dai` and
 `cao264` require actual decoded residual/prediction-error data.
@@ -139,9 +147,12 @@ python tools/audit_input_domains.py --manifest path/to/manifest.csv --method all
 
 ## Project Structure
 
-- `cao/`, `shen/`, `zhao/`: IPM-based steganalysis methods.
-- `cao264/`, `cao-tu/`, `zhai/`: Statistical feature-based steganalysis methods.
-- `dai/`, `dai-pu/`: Deep learning-based steganalysis methods.
+- `cao/`, `shen/`, `zhao/`: IPM-domain steganalysis methods.
+- `cao-tu/`: CU/PU/TU partition-structure steganalysis.
+- `zhai/`: Motion-vector-domain steganalysis.
+- `cao264/`: Prediction-error-block/residual-statistics steganalysis.
+- `dai/`: Prediction-error-domain deep steganalysis.
+- `dai-pu/`: PU partition-map deep steganalysis.
 - `common/`: Shared modules for data processing and evaluation.
 - `tools/`: Input validation and experimental utilities (no decoder included).
 - `tests/`: Basic functionality tests.
