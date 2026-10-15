@@ -11,10 +11,8 @@ Selected Tar steganography algorithm sources are available under `stego/tar1/`,
 provided under `stego/tar3/`. Decoder executables and sample videos are not
 included.
 
-Our dual-branch IPM/coefficient method is provided as
-[`proposed/model.py`](proposed/model.py) and [`proposed/run.py`](proposed/run.py).
-The runner expects precomputed frame maps (`.npy`) and fold label maps (`.json`).
-It requires PyTorch, NumPy, scikit-learn, and `efficientnet-pytorch`.
+Our dual-branch IPM/coefficient method is in `proposed/`: set the paths in
+`config.json`, then run `python proposed/run.py`.
 
 ## Input format
 

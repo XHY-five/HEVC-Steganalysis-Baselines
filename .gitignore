@@ -88,3 +88,4 @@ stego/tar3/new3/*
 proposed/*
 !proposed/model.py
 !proposed/run.py
+!proposed/config.json
