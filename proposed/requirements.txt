@@ -1,5 +1,0 @@
-efficientnet-pytorch
-numpy
-scikit-learn
-torch
-tqdm

@@ -84,10 +84,7 @@ stego/tar3/new3/*
 !stego/tar3/new3/x265.exe
 !stego/tar3/new3/stc*.exe
 
-# Release only the first-party proposed-method source and documentation.
+# Publish only the proposed model and experiment runner.
 proposed/*
-!proposed/*.py
-!proposed/README.md
-!proposed/requirements.txt
-proposed/decodeorg.py
-proposed/decodesteg.py
+!proposed/model.py
+!proposed/run.py
