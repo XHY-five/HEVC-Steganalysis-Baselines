@@ -1,6 +1,5 @@
 """Contract tests for the compact proposed model runner."""
 
-import importlib.util
 import json
 from pathlib import Path
 
@@ -8,12 +7,14 @@ import numpy as np
 import pytest
 import torch
 from torch import nn
+from common import proposed as proposed_run
 
 
 RUN_PATH = Path(__file__).resolve().parents[1] / "proposed" / "run.py"
-SPEC = importlib.util.spec_from_file_location("proposed_run", RUN_PATH)
-proposed_run = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(proposed_run)
+
+
+def test_run_entrypoint_stays_small():
+    assert len(RUN_PATH.read_text(encoding="utf-8").splitlines()) <= 15
 
 
 def make_sample(root, segment, frame, stego, ipm):
@@ -97,15 +98,17 @@ def test_config_paths_are_relative_to_config_file(tmp_path):
     assert values["fold"] == 2
 
 
-def test_main_uses_config_without_command_line_arguments(tmp_path, monkeypatch):
+def test_run_uses_config_without_command_line_arguments(tmp_path, monkeypatch):
     config = tmp_path / "config.json"
     config.write_text(json.dumps({"data_root": "data", "split_dir": "splits",
                                   "epochs": 3}), encoding="utf-8")
     calls = []
     monkeypatch.setattr(proposed_run, "train_fold", lambda **kwargs: calls.append(kwargs))
-    proposed_run.main(config)
+    factory = lambda: None
+    proposed_run.run(factory, config)
     assert calls[0]["epochs"] == 3
     assert calls[0]["data_root"] == tmp_path / "data"
+    assert calls[0]["model_factory"] is factory
 
 
 def test_config_requires_input_paths(tmp_path):
