@@ -83,3 +83,11 @@ stego/tar3/new2/*
 stego/tar3/new3/*
 !stego/tar3/new3/x265.exe
 !stego/tar3/new3/stc*.exe
+
+# Release only the first-party proposed-method source and documentation.
+proposed/*
+!proposed/*.py
+!proposed/README.md
+!proposed/requirements.txt
+proposed/decodeorg.py
+proposed/decodesteg.py
