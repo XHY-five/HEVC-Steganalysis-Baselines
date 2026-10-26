@@ -64,6 +64,12 @@ stego/tar2/*
 !stego/tar4/
 stego/tar4/*
 !stego/tar4/stc_embed_ipm.py
+!stego/tar4/C_Coder/
+stego/tar4/C_Coder/*
+!stego/tar4/C_Coder/x265_TU.exe
+!stego/tar4/extractencoder/
+stego/tar4/extractencoder/*
+!stego/tar4/extractencoder/x265_TU.exe
 !stego/tar4/run_TU.py
 !stego/tar4/TU_cover.py
 !stego/tar4/TU_embed_batch.py
