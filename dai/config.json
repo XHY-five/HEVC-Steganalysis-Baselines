@@ -1,1 +1,0 @@
-{"input_kind":"prediction_error","batch_size":16,"learning_rate":0.0001,"epochs":50,"decay_every":10,"decay_gamma":0.8,"image_size":128,"max_frames":8,"base_channels":32,"clip":32,"seed":42}
