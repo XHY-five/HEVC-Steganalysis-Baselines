@@ -52,8 +52,31 @@ tools/bin/x265_recompress/
 tools/reencode_calibration.py
 tools/x265_candidates.py
 
-# Publish selected Tar algorithms without build trees or experiment data.
+# Publish selected steganography algorithms without build trees or experiment data.
 stego/*
+!stego/liu/
+stego/liu/*
+!stego/liu/HM_diamond/
+stego/liu/HM_diamond/*
+!stego/liu/HM_diamond/COPYING
+!stego/liu/HM_diamond/source/
+stego/liu/HM_diamond/source/**/*.pdf
+stego/liu/HM_diamond/source/**/*.sh
+stego/liu/HM_diamond/source/**/*.shl
+stego/liu/HM_diamond/source/**/makefile
+!stego/wang/
+stego/wang/*
+!stego/wang/Wang_IPM_Standalone/
+stego/wang/Wang_IPM_Standalone/*
+!stego/wang/Wang_IPM_Standalone/algorithm/
+stego/wang/Wang_IPM_Standalone/algorithm/*
+!stego/wang/Wang_IPM_Standalone/algorithm/wang_ipm.py
+!stego/wang/Wang_IPM_Standalone/algorithm/test_wang_ipm.py
+!stego/yang/
+stego/yang/*
+!stego/yang/TAppEncoder.exe
+!stego/yang/encoder_lowdelay_P_main.cfg
+!stego/yang/batch_stego_encode_payload.py
 !stego/tar1/
 stego/tar1/*
 !stego/tar1/generate_embed_plan.py

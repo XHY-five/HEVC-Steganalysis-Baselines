@@ -8,8 +8,8 @@ residual statistics (`cao264`, `dai`).
 
 Selected Tar steganography algorithm sources are available under `stego/tar1/`,
 `stego/tar2/`, `stego/tar4/`, and `stego/tar5/`. Tar3 embedding executables are
-provided under `stego/tar3/`. Decoder executables and sample videos are not
-included.
+provided under `stego/tar3/`. Liu, Wang, and Yang implementations are also in
+`stego/`. Decoder executables and sample videos are not included.
 
 Our dual-branch IPM/coefficient method is in `proposed/`: set the paths in
 `config.json`, then run `python proposed/run.py`.
