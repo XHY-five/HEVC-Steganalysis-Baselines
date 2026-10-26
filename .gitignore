@@ -42,19 +42,34 @@ stego/**/build/
 *.tmp
 *.temp
 
-# Keep executable deliverables
-!*.exe
-
-# Decoder implementations are intentionally not distributed. Users provide
-# their own decoder/exporter that emits the text interface documented in README.
+# External codec binaries and local wrappers
+*.exe
 tools/bin/hm_ipm/
 tools/bin/hm_stego/
 tools/decode_ipm.py
-
-# Steganographic embedders and encoder implementations are also local-only.
-# The repository publishes only steganalysis code and interface formats.
-stego/
 tools/bin/x265_candidates/
 tools/bin/x265_recompress/
 tools/reencode_calibration.py
 tools/x265_candidates.py
+
+# Publish the core steganography sources without build trees, binaries,
+# experiments, video data, or local pipeline launchers.
+stego/*
+!stego/liu/
+stego/liu/*
+!stego/liu/HM_diamond/
+stego/liu/HM_diamond/*
+!stego/liu/HM_diamond/COPYING
+!stego/liu/HM_diamond/source/
+!stego/tar1/
+stego/tar1/*
+!stego/tar1/generate_embed_plan.py
+!stego/tar1/test_generate_embed_plan.py
+!stego/wang/
+stego/wang/*
+!stego/wang/Wang_IPM_Standalone/
+stego/wang/Wang_IPM_Standalone/*
+!stego/wang/Wang_IPM_Standalone/algorithm/
+stego/wang/Wang_IPM_Standalone/algorithm/*
+!stego/wang/Wang_IPM_Standalone/algorithm/wang_ipm.py
+!stego/wang/Wang_IPM_Standalone/algorithm/test_wang_ipm.py

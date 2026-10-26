@@ -10,13 +10,28 @@ protocol. Instrumented HM/x265 syntax exports provide a common interchange
 format, but sharing that input container does not make every method an IPM
 steganalysis method.
 
-## Codec and steganography implementation policy
+## Published steganography sources
 
-No HEVC encoder, decoder, steganographic embedder, codec wrapper, or related
-binary is distributed in this repository. Users must provide
-their own implementations and produce UTF-8 text files in the interfaces
-described below. The published code performs steganalysis only; it does not
-embed data, encode YUV video, or decode HEVC bitstreams.
+The repository also includes selected source code for generating stego inputs.
+These files are separate from the eight steganalysis baselines:
+
+| Source | Included code | External inputs |
+| --- | --- | --- |
+| `stego/tar1/generate_embed_plan.py` | Candidate filtering and matrix coding for an IPM modification plan | Cover IPM TXT and per-block candidate TXT |
+| `stego/wang/Wang_IPM_Standalone/algorithm/wang_ipm.py` | Wang angle-difference IPM embedding and extraction | Cover IPM TXT; optional candidate RD-cost JSON |
+| `stego/liu/HM_diamond/source/` | HM source tree containing the diamond-coding modification | An HM-compatible build environment and input video |
+
+The HM source retains its original upstream C++ layout and license in
+`stego/liu/HM_diamond/COPYING`. Build directories, prebuilt EXEs, videos,
+generated TXT files, and experiment launchers are excluded. The locally
+available `tar3` scripts orchestrate external STC/x265 binaries, while the
+`yang` script invokes an encoder whose embedding implementation is available
+here only as a binary; neither supplies a standalone core algorithm source.
+They are therefore excluded from this source release.
+
+To use the Python algorithms, install their dependencies and supply the input
+files described below. Tar1 uses `pandas`; Wang uses the Python standard
+library. No encoder or decoder executable is bundled.
 
 ## External stego/encoder output contract
 
@@ -35,8 +50,8 @@ comparable codec settings (resolution, frame count, frame rate, QP, GOP and
 chroma/bit-depth settings) so the classifier does not learn encoder-setting
 differences instead of steganographic traces.
 
-If an external embedder exchanges an IPM modification plan with an instrumented
-encoder, use this plain UTF-8 record format (the former `stego/wang` interface):
+The Tar1 and Wang algorithms write an IPM modification plan for a user-supplied
+instrumented encoder. Its plain UTF-8 record format is:
 
 ```text
 Frame 1 begin
@@ -46,9 +61,43 @@ Frame 1 end
 ```
 
 `oriIPM` is the original intra-prediction mode and `stegIPM` is the requested
-embedded mode at the same spatial block. This modification-plan format is only
-a contract for a user-supplied embedder/encoder; the steganalysis programs read
-the decoded syntax TXT described below.
+embedded mode at the same spatial block. The steganalysis programs read the
+decoded syntax TXT described below, not this pre-encoding plan.
+
+### Tar1 candidate input
+
+`generate_embed_plan.py` reads the cover IPM TXT shown below and a separate
+candidate TXT with one `name=value` record per candidate PU. Required fields
+are `Frame`, `CTU`, `x`, `y`, `depth`, `paritionSize`, `coverIPM`, `coverBit`,
+`D0`, `D1`, `IPM_0`, and `IPM_1`. For example:
+
+```text
+Frame=1 CTU=0 x=0 y=0 depth=3 paritionSize=3 coverIPM=15 coverBit=1 D0=4.2 D1=4.8 IPM_0=14 IPM_1=15
+```
+
+Four candidate records must form each eligible 8×8 region; the algorithm
+groups records by frame, CTU, CU coordinates, depth, and partition size. It
+selects a payload fraction by minimum `D0`/`D1`, then writes the IPM plan
+above. Set `cover_root`, `cand_root`, `stego_root`, and `payload` in the script's
+`__main__` block for a local run. `Cencoder.py` and `StegoDecoder.py` are
+local codec launchers and are not required to read or generate the plan.
+
+### Wang cover and optional RD-cost input
+
+Wang reads the decoded cover IPM TXT shown below, including `Frame N begin/end`
+and the `CTU Address`, `x`, `y`, `paritionSize`, `depth`, `size`, and `IPM`
+fields. For eligible 4×4 PUs, the current exporter represents the containing
+CU as `paritionSize=3 depth=3 size=8x8`. To embed:
+
+```bash
+python stego/wang/Wang_IPM_Standalone/algorithm/wang_ipm.py embed --cover cover_ipm.txt --output stego_ipm.txt --payload-ratio 0.3
+```
+
+The script also writes `.json` metadata and `.bits` next to the output TXT.
+Optional `--ddg-dir` files are named `frame_N_ddg.json` and contain nodes with
+`ctu_addr`, `x`, `y`, `w=4`, `h=4`, and a `candidates` object mapping IPM indices
+to RD costs. Without complete RD costs, the script reports when it uses a
+nearest-IPM fallback; this does not reproduce the paper's RD-optimal choice.
 
 Each sample normally has two files:
 
@@ -153,6 +202,7 @@ python tools/audit_input_domains.py --manifest path/to/manifest.csv --method all
 - `cao264/`: Prediction-error-block/residual-statistics steganalysis.
 - `dai/`: Prediction-error-domain deep steganalysis.
 - `dai-pu/`: PU partition-map deep steganalysis.
+- `stego/tar1/`, `stego/wang/`, `stego/liu/`: Selected embedding algorithm sources and their input contracts above.
 - `common/`: Shared modules for data processing and evaluation.
 - `tools/`: Input validation and experimental utilities (no decoder included).
 - `tests/`: Basic functionality tests.
