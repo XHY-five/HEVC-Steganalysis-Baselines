@@ -61,6 +61,10 @@ stego/liu/*
 stego/liu/HM_diamond/*
 !stego/liu/HM_diamond/COPYING
 !stego/liu/HM_diamond/source/
+stego/liu/HM_diamond/source/**/*.pdf
+stego/liu/HM_diamond/source/**/*.sh
+stego/liu/HM_diamond/source/**/*.shl
+stego/liu/HM_diamond/source/**/makefile
 !stego/tar1/
 stego/tar1/*
 !stego/tar1/generate_embed_plan.py
