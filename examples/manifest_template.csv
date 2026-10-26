@@ -1,0 +1,5 @@
+sample_id,label,split,tar,payload,frame,original,calibrated
+clip01_cover,0,train,Tar3,0.3,0,logs/cover/clip01.txt,logs/cover_cal/clip01.txt
+clip01_stego,1,train,Tar3,0.3,0,logs/stego/clip01.txt,logs/stego_cal/clip01.txt
+clip02_cover,0,test,Tar3,0.3,0,logs/cover/clip02.txt,logs/cover_cal/clip02.txt
+clip02_stego,1,test,Tar3,0.3,0,logs/stego/clip02.txt,logs/stego_cal/clip02.txt

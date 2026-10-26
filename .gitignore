@@ -1,0 +1,46 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# IDE and operating-system metadata
+.vscode/
+.idea/
+.vs/
+.DS_Store
+Thumbs.db
+
+# HEVC/HM build trees (large generated output)
+stego/**/build/
+
+# Generated compiler and linker files outside build directories
+*.obj
+*.o
+*.lib
+*.a
+*.dll
+*.pdb
+*.idb
+*.ilk
+*.exp
+*.tlog
+*.lastbuildstate
+*.cache
+*.recipe
+*.manifest
+*.sdf
+*.suo
+*.user
+*.opensdf
+*.ipch
+*.iobj
+*.ipdb
+
+# Generated logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Keep executable deliverables
+!*.exe
