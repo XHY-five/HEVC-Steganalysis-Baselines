@@ -1,0 +1,10 @@
+{
+  "data_root": "data",
+  "split_dir": "splits",
+  "output_dir": "output",
+  "fold": 1,
+  "epochs": 50,
+  "batch_size": 16,
+  "learning_rate": 0.0001,
+  "device": "auto"
+}

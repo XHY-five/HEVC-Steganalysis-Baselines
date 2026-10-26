@@ -86,6 +86,35 @@ def test_nonpositive_epochs_are_rejected(tmp_path):
         proposed_run.train_fold(tmp_path, tmp_path, epochs=0)
 
 
+def test_config_paths_are_relative_to_config_file(tmp_path):
+    config = tmp_path / "config.json"
+    config.write_text(json.dumps({"data_root": "data", "split_dir": "splits",
+                                  "output_dir": "results", "fold": 2}), encoding="utf-8")
+    values = proposed_run.load_config(config)
+    assert values["data_root"] == tmp_path / "data"
+    assert values["split_dir"] == tmp_path / "splits"
+    assert values["output_dir"] == tmp_path / "results"
+    assert values["fold"] == 2
+
+
+def test_main_uses_config_without_command_line_arguments(tmp_path, monkeypatch):
+    config = tmp_path / "config.json"
+    config.write_text(json.dumps({"data_root": "data", "split_dir": "splits",
+                                  "epochs": 3}), encoding="utf-8")
+    calls = []
+    monkeypatch.setattr(proposed_run, "train_fold", lambda **kwargs: calls.append(kwargs))
+    proposed_run.main(config)
+    assert calls[0]["epochs"] == 3
+    assert calls[0]["data_root"] == tmp_path / "data"
+
+
+def test_config_requires_input_paths(tmp_path):
+    config = tmp_path / "config.json"
+    config.write_text("{}", encoding="utf-8")
+    with pytest.raises(ValueError, match="data_root"):
+        proposed_run.load_config(config)
+
+
 def test_one_epoch_training_smoke(tmp_path):
     data = tmp_path / "data"
     split = tmp_path / "split"

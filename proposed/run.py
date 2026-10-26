@@ -4,7 +4,6 @@ Inputs are precomputed per-frame IPM, coefficient, and block-map NumPy arrays,
 plus train/validation/test label-map JSON files for each fold.
 """
 
-import argparse
 import copy
 import json
 from pathlib import Path
@@ -163,19 +162,23 @@ def train_fold(data_root, split_dir, fold=1, output_dir="output", epochs=50,
     return result
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data-root", type=Path, required=True)
-    parser.add_argument("--split-dir", type=Path, required=True)
-    parser.add_argument("--fold", type=int, default=1)
-    parser.add_argument("--output-dir", type=Path, default=Path("output"))
-    parser.add_argument("--epochs", type=int, default=50)
-    parser.add_argument("--batch-size", type=int, default=16)
-    parser.add_argument("--learning-rate", type=float, default=1e-4)
-    parser.add_argument("--device", default="auto")
-    args = parser.parse_args()
-    train_fold(args.data_root, args.split_dir, args.fold, args.output_dir,
-               args.epochs, args.batch_size, args.learning_rate, args.device)
+def load_config(config_path):
+    path = Path(config_path)
+    with path.open(encoding="utf-8") as file:
+        config = json.load(file)
+    for key in ("data_root", "split_dir"):
+        if not config.get(key):
+            raise ValueError(f"config.json requires {key}")
+    for key in ("data_root", "split_dir", "output_dir"):
+        if key in config:
+            value = Path(config[key])
+            config[key] = value if value.is_absolute() else path.parent / value
+    return config
+
+
+def main(config_path=None):
+    path = config_path or Path(__file__).with_name("config.json")
+    train_fold(**load_config(path))
 
 
 if __name__ == "__main__":
