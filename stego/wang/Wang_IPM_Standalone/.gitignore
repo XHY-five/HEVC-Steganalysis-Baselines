@@ -1,9 +1,0 @@
-# External original inputs - not bundled in Git projects
-input/videos/*
-input/cover_ipm/*
-outputs/*
-!input/videos/.gitkeep
-!input/cover_ipm/.gitkeep
-!outputs/.gitkeep
-__pycache__/
-*.pyc

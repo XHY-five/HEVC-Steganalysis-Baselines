@@ -2,12 +2,46 @@
 
 This project provides implementations of eight video steganalysis methods for evaluating their detection performance against HEVC Intra Prediction Mode (IPM) steganography. The implementations utilize HM/x265 decoding information for feature extraction, model training, and performance evaluation, following a unified data partitioning and experimental protocol.
 
-## Decoder policy
+## Codec and steganography implementation policy
 
-No HEVC decoder implementation or decoder binary is distributed in this
-repository. Users must implement or instrument their own decoder/exporter and
-produce UTF-8 text files in the interface described below. The steganalysis
-code only parses these files; it does not decode HEVC bitstreams itself.
+No HEVC encoder, decoder, steganographic embedder, codec wrapper, or related
+binary is distributed in this repository. This includes method-specific
+implementations such as those formerly kept under `stego/`. Users must provide
+their own implementations and produce UTF-8 text files in the interfaces
+described below. The published code performs steganalysis only; it does not
+embed data, encode YUV video, or decode HEVC bitstreams.
+
+## External stego/encoder output contract
+
+An external data-generation pipeline must produce, for every sample:
+
+1. A cover or stego HEVC bitstream (`.265`, `.hevc`, or `.bin`).
+2. A decoded `original` syntax TXT matching the format in the next section.
+3. When required by the selected method, a calibrated/recompressed bitstream
+   and its decoded `calibrated` syntax TXT.
+4. One row in the experiment manifest identifying the sample, class label,
+   split, payload, frame, and TXT paths.
+
+The filenames and directory layout are not significant; the manifest is the
+authoritative mapping. Cover and stego samples must be generated with
+comparable codec settings (resolution, frame count, frame rate, QP, GOP and
+chroma/bit-depth settings) so the classifier does not learn encoder-setting
+differences instead of steganographic traces.
+
+If an external embedder exchanges an IPM modification plan with an instrumented
+encoder, use this plain UTF-8 record format (the former `stego/wang` interface):
+
+```text
+Frame 1 begin
+CTU Address: 4 x=272,y=24 paritionSize=3 depth=3 size=8x8 oriIPM=26 stegIPM=25
+CTU Address: 4 x=276,y=24 paritionSize=3 depth=3 size=8x8 oriIPM=20 stegIPM=21
+Frame 1 end
+```
+
+`oriIPM` is the original intra-prediction mode and `stegIPM` is the requested
+embedded mode at the same spatial block. This modification-plan format is only
+a contract for a user-supplied embedder/encoder; the steganalysis programs read
+the decoded syntax TXT described below.
 
 Each sample normally has two files:
 
