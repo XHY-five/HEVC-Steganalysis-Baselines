@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from efficientnet_pytorch import EfficientNet
 import os
+from pathlib import Path
 
 
 class CustomStem(nn.Module):
@@ -126,8 +127,8 @@ class DualBranchEnsemble(nn.Module):
         try:
             # 1. 指定本地权重文件路径
             ckpt_map = {
-                'efficientnet-b3': 'efficientnet_path/efficientnet-b3-5fb5a3c3.pth',
-                'efficientnet-b1': 'efficientnet_path/efficientnet-b1-f1951068.pth'
+                'efficientnet-b3': Path(__file__).resolve().parent / 'efficientnet_path' / 'efficientnet-b3-5fb5a3c3.pth',
+                'efficientnet-b1': Path(__file__).resolve().parent / 'efficientnet_path' / 'efficientnet-b1-f1951068.pth'
             }
             ckpt_path = ckpt_map.get(model_name)
             assert ckpt_path is not None, f"Unknown model name: {model_name}"
