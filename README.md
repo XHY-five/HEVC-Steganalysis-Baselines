@@ -6,10 +6,10 @@ intra-prediction-mode (IPM) steganography. The other methods analyze partition
 structure (`cao-tu`, `dai-pu`), motion vectors (`zhai`), or prediction-error and
 residual statistics (`cao264`, `dai`).
 
-Selected steganography algorithm sources are also available under `stego/`:
-Tar1 matrix coding, Wang IPM embedding, and Liu's modified HM source. Encoder
-executables for Tar3 and Yang are also provided in `stego/tar3/` and
-`stego/yang/`. Decoder executables and sample videos are not included.
+Selected Tar steganography algorithm sources are available under `stego/tar1/`,
+`stego/tar2/`, `stego/tar4/`, and `stego/tar5/`. Tar3 embedding executables are
+provided under `stego/tar3/`. Decoder executables and sample videos are not
+included.
 
 ## Input format
 
