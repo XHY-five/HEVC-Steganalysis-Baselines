@@ -8,7 +8,8 @@ residual statistics (`cao264`, `dai`).
 
 Selected steganography algorithm sources are also available under `stego/`:
 Tar1 matrix coding, Wang IPM embedding, and Liu's modified HM source. Encoder
-and decoder executables are not included.
+executables for Tar3 and Yang are also provided in `stego/tar3/` and
+`stego/yang/`. Decoder executables and sample videos are not included.
 
 ## Input format
 
