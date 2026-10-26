@@ -11,6 +11,8 @@ Selected Tar steganography algorithm sources are available under `stego/tar1/`,
 provided under `stego/tar3/`. Decoder executables and sample videos are not
 included.
 
+Our dual-branch IPM/coefficient steganalysis method is under [`proposed/`](proposed/).
+
 ## Input format
 
 The baselines consume UTF-8 text exported from an instrumented HEVC
